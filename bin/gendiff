@@ -1,8 +1,27 @@
 #!/usr/bin/env php
 <?php
 
-  echo 'Welcome to the Brain Game!', PHP_EOL;
-  echo 'May I have your name? ';
+$autoloadPath1 = __DIR__ . '/../../../autoload.php';
+$autoloadPath2 = __DIR__ . '/../vendor/autoload.php';
 
-  $name = trim(fgets(STDIN));
-  echo "Hello, {$name}!", PHP_EOL;
+if (file_exists($autoloadPath1)) {
+    require_once $autoloadPath1;
+} else {
+    require_once $autoloadPath2;
+}
+
+$doc = <<<DOC
+Generate diff
+
+Usage:
+  gendiff (-h|--help)
+  gendiff [--format <fmt>] <firstFile> <secondFile>
+
+Options:
+  -h --help                     Show this screen
+  --format <fmt>                Report format [default: pretty]
+DOC;
+
+$args = Docopt::handle($doc);
+foreach ($args as $key => $value)
+    echo $key.': '.json_encode($value).PHP_EOL;
