@@ -1,0 +1,16 @@
+{
+    "name": "mvaload/difference-calculator",
+    "description": "Utility for finding differences in configuration files",
+    "type": "project",
+    "license": "MIT",
+    "bin": [
+        "bin/gendiff"
+    ],
+    "authors": [
+        {
+            "name": "Moiseenko Vladimir",
+            "email": "mvaload@gmail.com"
+        }
+    ],
+    "require": {}
+}
