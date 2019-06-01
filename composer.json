@@ -3,6 +3,7 @@
     "description": "Utility for finding differences in configuration files",
     "type": "project",
     "license": "MIT",
+    "keywords": ["cli", "data formats", "difference calculator", "calculator"],
     "bin": [
         "bin/gendiff"
     ],
