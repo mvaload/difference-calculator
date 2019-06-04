@@ -13,6 +13,9 @@
             "email": "mvaload@gmail.com"
         }
     ],
+    "autoload": {
+        "files": ["src/differ.php"]
+    },
     "scripts": {
         "phpcs": "phpcs"
     },
