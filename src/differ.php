@@ -2,33 +2,64 @@
 
 namespace DiffCalc\differ;
 
+use function DiffCalc\renderer\render;
+use Funct\Collection;
 
-function run()	
+function genDiff($filePath1, $filePath2, $format = 'pretty')
 {
-	$doc = <<<DOC
-	Generate diff
+    $fileData1 = file_get_contents($filePath1);
+    $fileData2 = file_get_contents($filePath2);
 
-	Usage:
-	  gendiff (-h|--help)
-	  gendiff [--format <fmt>] <firstFile> <secondFile>
+    $data1 = json_decode($fileData1, true);
+    $data2 = json_decode($fileData2, true);
 
-	Options:
-	  -h --help           Show this screen
-	  --format <fmt>      Report format [default: pretty]
-DOC;
+    $parsData = buildDiff($data1, $data2);
 
-	$args = \Docopt::handle($doc);
-	foreach ($args as $key => $value) {
-	    echo $key.': '.json_encode($value).PHP_EOL;
-	}
+    return $parsData;
+}
 
-	function getDiff($firstFile, $secondFile)
-	{
-		$file1 = file_get_contents($firstFile);
-		$file2 = file_get_contents($secondFile);
 
-		echo $file1 . "\n" . $file2;
-	}
+function buildDiff($arr1, $arr2)
+{
+    $keys = Collection\union(array_keys($arr1), array_keys($arr2));
 
-	getDiff($args['firstFile'], $args['secondFile']);
+    $diff = array_reduce($keys, function ($acc, $key) use ($arr1, $arr2) {
+        if (array_key_exists($key, $arr1) && array_key_exists($key, $arr2)) {
+            if (is_array($arr1[$key]) && is_array($arr2[$key])) {
+                $acc[] = [
+                    'type' => 'nested',
+                    'key' => $key,
+                    'children' => buildDiff($arr1[$key], $arr2[$key])
+                ];
+            } elseif ($arr2[$key] === $arr1[$key]) {
+                $acc[] = [
+                    'type' => 'fixed',
+                    'key' => $key,
+                    'value' => $arr2[$key]
+                ];
+            } else {
+                $acc[] = [
+                    'type' => 'updated',
+                    'key' => $key,
+                    'valueBefore' => $arr1[$key],
+                    'valueAfter' => $arr2[$key]
+                ];
+            }
+        } elseif (array_key_exists($key, $arr2)) {
+            $acc[] = [
+                'type' => 'added',
+                'key' => $key,
+                'valueAfter' => $arr2[$key]
+            ];
+        } else {
+            $acc[] = [
+                'type' => 'deleted',
+                'key' => $key,
+                'valueBefore' => $arr1[$key]
+            ];
+        }
+        return $acc;
+	}, []);
+
+    return $diff;
 }
