@@ -14,8 +14,8 @@ function genDiff($filePath1, $filePath2, $format = 'pretty')
     $data2 = json_decode($fileData2, true);
 
     $parsData = buildDiff($data1, $data2);
-
-    return $parsData;
+    
+    return render($parsData, $format);
 }
 
 
@@ -59,7 +59,7 @@ function buildDiff($arr1, $arr2)
             ];
         }
         return $acc;
-	}, []);
+    }, []);
 
     return $diff;
 }
