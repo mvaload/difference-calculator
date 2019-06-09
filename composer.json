@@ -21,7 +21,8 @@
         },
         "files": [
             "src/differ.php",
-            "src/cli.php"
+            "src/cli.php",
+            "src/renderer.php"
         ]
     },
 
