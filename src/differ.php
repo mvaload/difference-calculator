@@ -3,18 +3,15 @@
 namespace DiffCalc\differ;
 
 use function DiffCalc\renderer\render;
+use function DiffCalc\parser\parsedData;
 use Funct\Collection;
 
 function genDiff($filePath1, $filePath2, $format = 'pretty')
 {
-    $fileData1 = file_get_contents($filePath1);
-    $fileData2 = file_get_contents($filePath2);
+    $fileData1 = parsedData($filePath1);
+    $fileData2 = parsedData($filePath2);
+    $parsData = buildDiff($fileData1, $fileData2);
 
-    $data1 = json_decode($fileData1, true);
-    $data2 = json_decode($fileData2, true);
-
-    $parsData = buildDiff($data1, $data2);
-    
     return render($parsData, $format);
 }
 
