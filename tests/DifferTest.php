@@ -24,5 +24,12 @@ class DifferTest extends TestCase
             'pretty'
         );
         $this->assertEquals($expected, $actual);
+
+        $actual = genDiff(
+            $this->getPath('before.yaml'),
+            $this->getPath('after.yaml'),
+            'pretty'
+        );
+        $this->assertEquals($expected, $actual);
     }
 }
