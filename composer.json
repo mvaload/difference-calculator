@@ -22,7 +22,8 @@
         "files": [
             "src/differ.php",
             "src/cli.php",
-            "src/renderer.php"
+            "src/renderer.php",
+            "src/parser.php"
         ]
     },
 
@@ -34,7 +35,8 @@
 
     "require": {
         "docopt/docopt": "^1.0",
-        "funct/funct": "^1.5"
+        "funct/funct": "^1.5",
+        "symfony/yaml": "^4.3"
     },
 
     "require-dev": {
