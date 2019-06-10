@@ -4,4 +4,7 @@ step 1:
 https://asciinema.org/a/54ILpieg1pjpEt1pB7cRLP84p  
 
 step 2:  
-https://asciinema.org/a/elBpCiqepCDdxFPx7YxKIjZKn
+https://asciinema.org/a/elBpCiqepCDdxFPx7YxKIjZKn  
+
+step 3:  
+https://asciinema.org/a/4HV2SnBnVq8f4WLP9amJ2tLe1
