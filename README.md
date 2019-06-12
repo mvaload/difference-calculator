@@ -10,4 +10,7 @@ step 3:
 https://asciinema.org/a/4HV2SnBnVq8f4WLP9amJ2tLe1  
 
 step 4:  
-https://asciinema.org/a/ge0ONIZnBUaUZriemcKxlTH9F
+https://asciinema.org/a/ge0ONIZnBUaUZriemcKxlTH9F  
+
+step 5:  
+https://asciinema.org/a/08ap10E6TVC0oWSOKJHnVgXMR
