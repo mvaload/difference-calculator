@@ -12,6 +12,8 @@ function getParser($content, $type)
         case 'yaml':
         case 'yml':
             return Yaml::parse($content);
+        default:
+            throw new \Exception("Unsupported data type '{$type}'");
     }
 }
 
