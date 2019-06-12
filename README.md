@@ -13,4 +13,7 @@ step 4:
 https://asciinema.org/a/ge0ONIZnBUaUZriemcKxlTH9F  
 
 step 5:  
-https://asciinema.org/a/08ap10E6TVC0oWSOKJHnVgXMR
+https://asciinema.org/a/08ap10E6TVC0oWSOKJHnVgXMR  
+
+step 6:  
+https://asciinema.org/a/OAnBsB1ToFmRbto8ScQW2oNwp
