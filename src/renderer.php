@@ -4,8 +4,6 @@ namespace DiffCalc\renderer;
 
 use Funct\Collection;
 
-const NUM_OF_SPACES = 4;
-
 function render($data, $format)
 {
     switch ($format) {
@@ -16,64 +14,51 @@ function render($data, $format)
     }
 }
 
-function rendPretty($data, $level = 0)
+function rendPretty(array $data, $level = 0)
 {
-    $spaces = str_repeat(" ", $level * NUM_OF_SPACES);
-    $result = Collection\flattenAll(array_map(function ($node) use ($level, $spaces) {
-        switch ($node['type']) {
-            case 'nested':
-                ['key' => $key, 'children' => $children] = $node;
-                $tree = rendPretty($children, $level + 1);
-                return "  {$spaces}  {$key}: {$tree}";
-            case 'deleted':
-                ['key' => $key, 'valueBefore' => $valueBefore] = $node;
-                $oldVal = transferToStr($valueBefore, $level + 1);
-                return "  {$spaces}- {$key}: {$oldVal}";
+    $spaces = '    ';
+    $offset = str_repeat($spaces, $level);
+
+    $diff = array_map(function ($node) use ($spaces, $offset, $level) {
+        ['key' => $key, 'type' => $type] = $node;
+        switch ($type) {
             case 'added':
-                ['key' => $key, 'valueAfter' => $valueAfter] = $node;
-                $newVal = transferToStr($valueAfter, $level + 1);
-                return "  {$spaces}+ {$key}: {$newVal}";
+                $value = prettyString($node['valueAfter'], $offset);
+                return "{$offset}  + {$key}: {$value}";
+            case 'deleted':
+                $value = prettyString($node['valueBefore'], $offset);
+                return "{$offset}  - {$key}: {$value}";
+            case 'nested':
+                $childrenDiff = rendPretty($node['children'], $level + 1);
+                return "{$offset}{$spaces}{$key}: {$childrenDiff}";
             case 'updated':
-                ['key' => $key, 'valueBefore' => $valueBefore, 'valueAfter' => $valueAfter] = $node;
-                $oldVal = transferToStr($valueBefore, $level + 1);
-                $newVal = transferToStr($valueAfter, $level + 1);
-                return ["  {$spaces}+ {$key}: {$newVal}",
-                        "  {$spaces}- {$key}: {$oldVal}"];
+                $after = prettyString($node['valueAfter'], $offset);
+                $before = prettyString($node['valueBefore'], $offset);
+                return "{$offset}  + {$key}: {$after}\n{$offset}  - {$key}: {$before}";
             case 'fixed':
-                ['key' => $key, 'value' => $value] = $node;
-                $oldVal = transferToStr($value, $level + 1);
-                return "  {$spaces}  {$key}: {$oldVal}";
+                $value = prettyString($node['valueBefore'], $offset);
+                return "{$offset}{$spaces}{$key}: {$value}";
         }
-    }, $data));
-    return implode("\n", array_merge(['{'], $result, ["{$spaces}}"]));
+    }, $data);
+
+    $leftBrace = "{\n";
+    $diffString = implode("\n", $diff);
+    $rightBrace = "\n{$offset}}";
+
+    return "{$leftBrace}{$diffString}{$rightBrace}";
 }
 
-function transferToStr($obj, $level)
+function prettyString($value, $offset)
 {
-    if (!is_object($obj)) {
-        return encode($obj);
+    $spaces = '    ';
+    if (is_bool($value)) {
+        $strValue = json_encode($value);
     }
-
-    $iter = function ($obj, $level) use (&$iter) {
-        $arr = get_object_vars($obj);
-        $keys = array_keys($arr);
-        $spaces = str_repeat(" ", $level * NUM_OF_SPACES);
-
-        $result = array_map(function ($item) use ($spaces, $level, $arr) {
-            if (is_object($arr[$item])) {
-                $tree = $iter($arr[$item], $level + 1);
-                return "{$spaces}    {$key}: {$tree}";
-            }
-            $value = encode($arr[$item]);
-            $key = encode($item);
-            return "{$spaces}    {$key}: {$value}";
-        }, $keys);
-        return implode("\n", array_merge(['{'], $result, ["{$spaces}}"]));
-    };
-    return $iter($obj, $level);
-}
-
-function encode($data)
-{
-    return trim(json_encode($data), '" ');
+    if (is_array($value)) {
+        $prettified = htmlspecialchars(json_encode($value, JSON_PRETTY_PRINT), ENT_QUOTES, 'UTF-8');
+        $unquoted = str_replace('&quot;', '', $prettified);
+        $indented = str_replace($spaces, "{$spaces}{$spaces}{$offset}", $unquoted);
+        $strValue = str_replace('}', "{$spaces}{$offset}}", $indented);
+    }
+    return isset($strValue) ? $strValue : $value;
 }
