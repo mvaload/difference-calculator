@@ -32,4 +32,23 @@ class DifferTest extends TestCase
         );
         $this->assertEquals($expected, $actual);
     }
+
+    public function testGenDiffNestedPretty()
+    {
+        $expected = file_get_contents($this->getPath('correct_diff_nested'));
+
+        $actual = genDiff(
+            $this->getPath('before_nested.json'),
+            $this->getPath('after_nested.json'),
+            'pretty'
+        );
+        $this->assertEquals($expected, $actual);
+
+        $actual = genDiff(
+            $this->getPath('before_nested.yaml'),
+            $this->getPath('after_nested.yaml'),
+            'pretty'
+        );
+        $this->assertEquals($expected, $actual);
+    }
 }
