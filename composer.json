@@ -20,6 +20,8 @@
             "Php\\Package\\Tests\\": "tests"
         },
         "files": [
+            "src/format/plain.php",
+            "src/format/pretty.php",
             "src/differ.php",
             "src/cli.php",
             "src/renderer.php",
