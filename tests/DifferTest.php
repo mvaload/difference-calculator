@@ -51,4 +51,16 @@ class DifferTest extends TestCase
         );
         $this->assertEquals($expected, $actual);
     }
+
+    public function testGenDiffPlane()
+    {
+        $expected = file_get_contents($this->getPath('correct_plane_diff'));
+
+        $actual = genDiff(
+            $this->getPath('before_nested.json'),
+            $this->getPath('after_nested.json'),
+            'plain'
+        );
+        $this->assertEquals($expected, $actual);
+    }
 }
