@@ -1,6 +1,6 @@
 ### Difference Calculator  
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/66960d336c1581040bff/maintainability)](https://codeclimate.com/github/mvaload/php-project-lvl2/maintainability) [![Build Status](https://travis-ci.com/mvaload/php-project-lvl2.svg?branch=master)](https://travis-ci.com/mvaload/php-project-lvl2)  
+[![Maintainability](https://api.codeclimate.com/v1/badges/615cc3e7587fbe698ad8/maintainability)](https://codeclimate.com/github/mvaload/difference-calculator/maintainability) [![Build Status](https://travis-ci.com/mvaload/php-project-lvl2.svg?branch=master)](https://travis-ci.com/mvaload/php-project-lvl2)  
 
 #### Installing
 
